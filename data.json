@@ -1,0 +1,246 @@
+{
+  "restaurant": {
+    "name": "مطعم الأجواء",
+    "tagline": "نكهات أصيلة من قلب ثلاث مطابخ عريقة — باكستاني، هندي، عربي — في وجهة واحدة بينبع.",
+    "phone": "+966560835401",
+    "website": "alajwarestaurant.com",
+    "address_ar": "ابو بكر الصديق رضي الله عنه. ينبع 44624، المملكة العربية السعودية",
+    "address_code": "33Q4+X3 Yanbu",
+    "delivery_url": "https://mykeeta.com",
+    "map_embed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3586.208170242!2d38.0583!3d24.0883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzNRNCtYMyBZYW5idSBBcmFiaWUgc2FvdWRpdGU!5e0!3m2!1sar!2ssa!4v1620000000000!5m2!1sar!2ssa"
+  },
+  "hero": {
+    "label": "YANBU · SAUDI ARABIA",
+    "title_line1": "مطعم",
+    "title_highlight": "الأجواء",
+    "subtitle": "نكهات باكستانية وهندية وعربية أصيلة — طبخ يحمل روح ثلاث مطابخ في مكان واحد بينبع."
+  },
+  "story": {
+    "eyebrow": "قصتنا",
+    "title": "ثلاث مطابخ، روحٌ واحدة",
+    "paragraph1": "بدأنا مطعم <strong>الأجواء</strong> من حبّ حقيقي للطعام الأصيل. أردنا أن نجمع في مكانٍ واحد أفضل ما تقدّمه المطابخ الثلاثة — الباكستاني بتوابله العميقة، والهندي بعطوره الدافئة، والعربي بطعمه الأصيل.",
+    "paragraph2": "كل طبق يُصنع بمكوّنات طازجة يومياً، وطهاة متخصصون يحملون سنوات من الخبرة والشغف.",
+    "values": [
+      "مكوّنات طازجة يومياً",
+      "طهاة متخصصون بخبرة عالية",
+      "أكل داخلي · سفري · توصيل",
+      "٧ أيام في الأسبوع"
+    ]
+  },
+  "stats": [
+    {
+      "num": "١٠+",
+      "label": "سنوات في خدمتكم"
+    },
+    {
+      "num": "٥٠+",
+      "label": "صنفاً في القائمة"
+    },
+    {
+      "num": "٧",
+      "label": "أيام في الأسبوع"
+    },
+    {
+      "num": "★ ٤.٨",
+      "label": "تقييم عملائنا"
+    }
+  ],
+  "hours": [
+    {
+      "day": "السبت",
+      "time": "05:00–09:00 · 11:30–01:00"
+    },
+    {
+      "day": "الأحد",
+      "time": "05:00–09:00 · 11:30–01:00"
+    },
+    {
+      "day": "الإثنين",
+      "time": "05:00–09:00 · 11:30–01:00"
+    },
+    {
+      "day": "الثلاثاء",
+      "time": "05:00–09:00 · 11:30–01:00"
+    },
+    {
+      "day": "الأربعاء",
+      "time": "05:00–09:00 · 11:30–01:00"
+    },
+    {
+      "day": "الخميس",
+      "time": "05:00–09:00 · 11:30–01:00"
+    },
+    {
+      "day": "الجمعة",
+      "time": "05:00–09:00 · 13:00–01:00"
+    }
+  ],
+  "menu_categories": [
+    {
+      "id": "pakistani",
+      "label": "باكستاني وهندي"
+    },
+    {
+      "id": "arabic",
+      "label": "عربي وبحري"
+    },
+    {
+      "id": "asian",
+      "label": "آسيوي"
+    }
+  ],
+  "menu_items": [
+    {
+      "id": 1,
+      "category": "pakistani",
+      "name_ar": "برياني حمام",
+      "name_en": "Chicken Hamam",
+      "desc": "أرز بسمتي معطّر مع دجاج متبّل بالبهارات الباكستانية الأصيلة",
+      "price": 30
+    },
+    {
+      "id": 2,
+      "category": "pakistani",
+      "name_ar": "برياني لحم",
+      "name_en": "Mutton Biryani",
+      "desc": "لحم ضأن طري مطهو مع أرز بسمتي بتوابل متوازنة",
+      "price": 40
+    },
+    {
+      "id": 3,
+      "category": "pakistani",
+      "name_ar": "كاراهي دجاج",
+      "name_en": "Chicken Karahi",
+      "desc": "دجاج طازج مطهو بصلصة الطماطم والبهارات في المقلاة",
+      "price": 35
+    },
+    {
+      "id": 4,
+      "category": "pakistani",
+      "name_ar": "كاراهي لحم",
+      "name_en": "Mutton Karahi",
+      "desc": "لحم ضأن طري بصلصة كاراهي الكلاسيكية",
+      "price": 55
+    },
+    {
+      "id": 5,
+      "category": "pakistani",
+      "name_ar": "دال ماش",
+      "name_en": "Daal Maash",
+      "desc": "عدس أبيض مطهو بزبدة وتوابل خفيفة — طبق الراحة الكلاسيكي",
+      "price": 20
+    },
+    {
+      "id": 6,
+      "category": "pakistani",
+      "name_ar": "حلوى سوجي",
+      "name_en": "Sooji Halwa",
+      "desc": "حلوى السميد التقليدية بالسمن والسكر والهيل",
+      "price": 15
+    },
+    {
+      "id": 7,
+      "category": "pakistani",
+      "name_ar": "خبز باكستاني",
+      "name_en": "Pakistani Roti",
+      "desc": "خبز طازج مخبوز على الطاوة الساخنة",
+      "price": 3
+    },
+    {
+      "id": 8,
+      "category": "pakistani",
+      "name_ar": "نان بالجبن",
+      "name_en": "Cheese Naan",
+      "desc": "نان طازج محشو بالجبن المذاب",
+      "price": 8
+    },
+    {
+      "id": 9,
+      "category": "arabic",
+      "name_ar": "مجبوس دجاج",
+      "name_en": "Chicken Majboos",
+      "desc": "أرز عنبر مع دجاج مطهو بالتوابل الخليجية الأصيلة",
+      "price": 35
+    },
+    {
+      "id": 10,
+      "category": "arabic",
+      "name_ar": "مجبوس لحم",
+      "name_en": "Mutton Majboos",
+      "desc": "أرز بلحم ضأن مطهو بطريقة الطبخ البطيء",
+      "price": 50
+    },
+    {
+      "id": 11,
+      "category": "arabic",
+      "name_ar": "مجبوس سمك",
+      "name_en": "Fish Majboos",
+      "desc": "سمك طازج مع أرز معطّر بالزعفران وبهارات البحر",
+      "price": 45
+    },
+    {
+      "id": 12,
+      "category": "arabic",
+      "name_ar": "سمك مقلي",
+      "name_en": "Fried Fish",
+      "desc": "سمك مقلي بتتبيلة مميزة مقدّم مع صلصة التمر الهندي",
+      "price": 40
+    },
+    {
+      "id": 13,
+      "category": "arabic",
+      "name_ar": "ربيان مشوي",
+      "name_en": "Grilled Prawns",
+      "desc": "روبيان طازج متبّل مشوي على الفحم",
+      "price": 55
+    },
+    {
+      "id": 14,
+      "category": "arabic",
+      "name_ar": "شاورما دجاج",
+      "name_en": "Chicken Shawarma",
+      "desc": "دجاج مشوي ببهارات الشاورما مع ثوم وخضار طازجة",
+      "price": 18
+    },
+    {
+      "id": 15,
+      "category": "asian",
+      "name_ar": "شوربة هاندي",
+      "name_en": "Handi Soup",
+      "desc": "شوربة كريمية دسمة بتوابل الهندي والكريمة الطازجة",
+      "price": 20
+    },
+    {
+      "id": 16,
+      "category": "asian",
+      "name_ar": "دجاج مقرمش بالعسل",
+      "name_en": "Crispy Honey Chicken",
+      "desc": "دجاج مقرمش مقلي بصلصة العسل الحلوة والحارة",
+      "price": 35
+    },
+    {
+      "id": 17,
+      "category": "asian",
+      "name_ar": "روبيان منشوريان",
+      "name_en": "Prawn Manchurian",
+      "desc": "روبيان مقلي بصلصة الصويا والفلفل الحار — منعش ومميز",
+      "price": 50
+    },
+    {
+      "id": 18,
+      "category": "asian",
+      "name_ar": "لحم بقري تشيلي",
+      "name_en": "Beef Chilli Dry",
+      "desc": "لحم بقري مقلي مع الفلفل الأخضر والبصل بصلصة الصويا",
+      "price": 40
+    },
+    {
+      "id": 19,
+      "name_ar": "طاجن بالكفتة",
+      "name_en": "tajine kefta",
+      "category": "pakistani",
+      "price": 35,
+      "desc": "طاجن مغربي أصيل"
+    }
+  ]
+}

@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم – مطعم الأجواء</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --navy:       #0a1930;
+      --navy-mid:   #112444;
+      --navy-light: #1a3560;
+      --gold:       #d4af37;
+      --gold-b:     #f0c950;
+      --cream:      #fcfaf5;
+      --white:      #ffffff;
+      --green:      #2ecc71;
+      --red:        #e74c3c;
+      --border:     rgba(212,175,55,0.18);
+      --surface:    rgba(255,255,255,0.04);
+      --font:       'Cairo', sans-serif;
+      --font-en:    'Outfit', sans-serif;
+      --r:          10px;
+      --r-lg:       18px;
+      --ease:       cubic-bezier(0.4,0,0.2,1);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { font-size:16px; }
+    body {
+      font-family: var(--font);
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 260px;
+      min-height: 100vh;
+      background: var(--navy-mid);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 100;
+      transition: transform 0.35s var(--ease);
+    }
+    .sidebar-brand {
+      padding: 2rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .brand-mark {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-b), #a87620);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 900; color: var(--white);
+      flex-shrink: 0;
+    }
+    .brand-text { font-size: 1.1rem; font-weight: 800; }
+    .brand-text span { color: var(--gold-b); }
+    .brand-sub { font-size: 0.72rem; color: rgba(255,255,255,0.45); font-family: var(--font-en); letter-spacing: 0.1em; }
+    .nav-section { padding: 1rem 0; }
+    .nav-section-label {
+      padding: 0.5rem 1.5rem;
+      font-size: 0.68rem;
+      font-family: var(--font-en);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.8rem 1.5rem;
+      cursor: pointer;
+      color: rgba(255,255,255,0.55);
+      font-weight: 600;
+      font-size: 0.97rem;
+      transition: all 0.25s var(--ease);
+      border-right: 3px solid transparent;
+    }
+    .nav-item i { width: 18px; text-align: center; font-size: 0.95rem; }
+    .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.04); }
+    .nav-item.active {
+      color: var(--gold-b);
+      background: rgba(212,175,55,0.08);
+      border-right-color: var(--gold);
+    }
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.3);
+      font-family: var(--font-en);
+    }
+
+    /* ===== MAIN ===== */
+    .main {
+      margin-right: 260px;
+      flex: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      background: rgba(17,36,68,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-title { font-size: 1.15rem; font-weight: 700; }
+    .topbar-title span { color: var(--gold-b); }
+    .save-btn {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: linear-gradient(135deg, var(--gold-b), var(--gold));
+      color: var(--navy);
+      border: none; border-radius: var(--r);
+      padding: 0.65rem 1.6rem;
+      font-family: var(--font); font-weight: 700; font-size: 0.97rem;
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+      box-shadow: 0 4px 20px rgba(212,175,55,0.35);
+    }
+    .save-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(212,175,55,0.5); }
+    .save-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .page { display: none; padding: 2rem; animation: fadeIn 0.3s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ===== CARDS / SECTIONS ===== */
+    .section-card {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .section-card-title {
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--gold-b);
+      margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .section-card-title i { font-size: 0.9rem; }
+
+    /* ===== FORM ===== */
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .field-row.single { grid-template-columns: 1fr; }
+    .field-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field label {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(255,255,255,0.45); font-family: var(--font-en);
+    }
+    .field input, .field textarea, .field select {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--r);
+      padding: 0.75rem 1rem;
+      color: var(--white);
+      font-family: var(--font);
+      font-size: 0.97rem;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: rgba(212,175,55,0.05);
+    }
+    .field textarea { resize: vertical; min-height: 90px; line-height: 1.7; }
+    .field select option { background: var(--navy-mid); }
+
+    /* ===== MENU TABLE ===== */
+    .menu-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;
+    }
+    .add-btn {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: rgba(212,175,55,0.12);
+      border: 1px solid rgba(212,175,55,0.3);
+      color: var(--gold-b);
+      border-radius: var(--r);
+      padding: 0.6rem 1.25rem;
+      font-family: var(--font); font-weight: 600; font-size: 0.95rem;
+      cursor: pointer; transition: all 0.25s;
+    }
+    .add-btn:hover { background: rgba(212,175,55,0.2); }
+
+    .filter-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .filter-tab {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.5);
+      border-radius: 6px;
+      padding: 0.4rem 1rem;
+      font-family: var(--font); font-weight: 600; font-size: 0.88rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .filter-tab:hover { border-color: rgba(212,175,55,0.4); color: var(--gold-b); }
+    .filter-tab.active { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+
+    .menu-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .menu-row {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--r);
+      display: grid;
+      grid-template-columns: 1fr 160px 80px 90px;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      transition: all 0.25s;
+    }
+    .menu-row:hover { border-color: rgba(212,175,55,0.3); background: rgba(255,255,255,0.05); }
+    .menu-row-name { font-weight: 700; font-size: 1rem; }
+    .menu-row-en { font-size: 0.8rem; color: rgba(255,255,255,0.35); font-family: var(--font-en); margin-top: 2px; }
+    .menu-row-cat {
+      font-size: 0.78rem; font-family: var(--font-en);
+      background: rgba(212,175,55,0.1); color: var(--gold-b);
+      border-radius: 6px; padding: 0.25rem 0.7rem;
+      display: inline-block;
+    }
+    .menu-row-price { font-family: var(--font-en); font-weight: 800; color: var(--gold-b); font-size: 1.1rem; }
+    .menu-row-actions { display: flex; gap: 0.5rem; justify-content: flex-end; }
+    .icon-btn {
+      width: 34px; height: 34px; border-radius: 8px;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.82rem; transition: all 0.2s;
+    }
+    .icon-btn-edit { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.6); }
+    .icon-btn-edit:hover { background: rgba(212,175,55,0.15); color: var(--gold-b); }
+    .icon-btn-del { background: rgba(231,76,60,0.08); color: rgba(231,76,60,0.6); }
+    .icon-btn-del:hover { background: rgba(231,76,60,0.2); color: var(--red); }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(5,10,20,0.8); backdrop-filter: blur(6px);
+      z-index: 1000; align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 2rem;
+      width: 100%; max-width: 560px;
+      max-height: 90vh; overflow-y: auto;
+      animation: fadeIn 0.25s ease;
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .modal-title { font-size: 1.1rem; font-weight: 700; color: var(--gold-b); }
+    .modal-close {
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.06); border: none; border-radius: 8px;
+      color: rgba(255,255,255,0.5); cursor: pointer; font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .modal-close:hover { background: rgba(231,76,60,0.15); color: var(--red); }
+    .modal-actions {
+      display: flex; gap: 0.75rem; justify-content: flex-end;
+      margin-top: 1.5rem; padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .btn-cancel {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.6);
+      border-radius: var(--r); padding: 0.65rem 1.4rem;
+      font-family: var(--font); font-weight: 600; font-size: 0.95rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-cancel:hover { border-color: rgba(255,255,255,0.3); color: var(--white); }
+    .btn-save-item {
+      background: linear-gradient(135deg, var(--gold-b), var(--gold));
+      color: var(--navy);
+      border: none; border-radius: var(--r);
+      padding: 0.65rem 1.6rem;
+      font-family: var(--font); font-weight: 700; font-size: 0.95rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-save-item:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(212,175,55,0.4); }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--green); color: var(--white);
+      padding: 0.8rem 1.8rem; border-radius: 100px;
+      font-weight: 700; font-size: 0.95rem;
+      opacity: 0; transition: all 0.4s var(--ease);
+      z-index: 2000; pointer-events: none; white-space: nowrap;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.error { background: var(--red); }
+
+    /* ===== HOURS TABLE ===== */
+    .hours-table { width: 100%; border-collapse: collapse; }
+    .hours-table th {
+      font-size: 0.72rem; font-family: var(--font-en); letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(255,255,255,0.35);
+      text-align: right; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border);
+    }
+    .hours-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .hours-table tr:last-child td { border-bottom: none; }
+    .hours-table .day-name { font-weight: 700; font-size: 0.97rem; }
+    .hours-table input {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px; padding: 0.45rem 0.75rem; color: var(--white);
+      font-family: var(--font-en); font-size: 0.9rem; width: 100%;
+      transition: border-color 0.2s;
+    }
+    .hours-table input:focus { outline: none; border-color: var(--gold); }
+
+    /* ===== STATS ===== */
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .stat-edit {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--r); padding: 1rem 1.25rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .stat-preview { font-size: 1.4rem; font-weight: 800; color: var(--gold-b); }
+
+    /* ===== PREVIEW LINK ===== */
+    .preview-banner {
+      background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.2);
+      border-radius: var(--r); padding: 1rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;
+    }
+    .preview-banner p { font-size: 0.95rem; color: rgba(255,255,255,0.7); }
+    .preview-banner a {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--navy-light); color: var(--gold-b);
+      border: 1px solid rgba(212,175,55,0.25); border-radius: var(--r);
+      padding: 0.5rem 1.2rem; font-weight: 600; font-size: 0.9rem;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .preview-banner a:hover { background: rgba(212,175,55,0.12); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-right: 0; }
+      .menu-row { grid-template-columns: 1fr 80px; }
+      .menu-row-cat, .menu-row-price { display: none; }
+      .field-row { grid-template-columns: 1fr; }
+      .field-row.triple { grid-template-columns: 1fr 1fr; }
+    }
+
+    .mobile-menu-btn {
+      display: none; background: none; border: none; color: var(--white); font-size: 1.3rem; cursor: pointer;
+    }
+    @media (max-width: 900px) { .mobile-menu-btn { display: block; } }
+
+    .overlay-bg {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 99;
+    }
+    .overlay-bg.show { display: block; }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+      text-align: center; padding: 3rem 1rem; color: rgba(255,255,255,0.3);
+    }
+    .empty-state i { font-size: 2.5rem; margin-bottom: 1rem; color: rgba(212,175,55,0.3); }
+    .empty-state p { font-size: 0.97rem; }
+  </style>
+</head>
+<body>
+
+<div class="overlay-bg" id="overlayBg"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-mark">أ</div>
+    <div>
+      <div class="brand-text">مطعم <span>الأجواء</span></div>
+      <div class="brand-sub">لوحة التحكم</div>
+    </div>
+  </div>
+  <nav class="nav-section">
+    <div class="nav-section-label">القائمة</div>
+    <div class="nav-item active" data-page="menu"><i class="fas fa-utensils"></i> قائمة الطعام</div>
+    <div class="nav-item" data-page="info"><i class="fas fa-store"></i> معلومات المطعم</div>
+    <div class="nav-item" data-page="hours"><i class="fas fa-clock"></i> ساعات العمل</div>
+    <div class="nav-item" data-page="stats"><i class="fas fa-chart-bar"></i> أرقام وإحصاءات</div>
+  </nav>
+  <div class="sidebar-footer">
+    مطعم الأجواء &copy; ٢٠٢٦<br>لوحة التحكم v1.0
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+      <div class="topbar-title" id="topbarTitle">قائمة <span>الطعام</span></div>
+    </div>
+    <button class="save-btn" id="saveBtn" onclick="saveData()">
+      <i class="fas fa-save"></i> حفظ التغييرات
+    </button>
+  </div>
+
+  <!-- PAGE: MENU -->
+  <div class="page active" id="page-menu">
+    <div class="preview-banner">
+      <p><i class="fas fa-info-circle" style="color:var(--gold-b);margin-left:0.5rem;"></i> بعد حفظ التغييرات، افتح الموقع لترى التحديثات فوراً</p>
+      <a href="index.html" target="_blank"><i class="fas fa-external-link-alt"></i> عرض الموقع</a>
+    </div>
+
+    <div class="section-card">
+      <div class="menu-toolbar">
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-cat="all">الكل</button>
+          <button class="filter-tab" data-cat="pakistani">باكستاني وهندي</button>
+          <button class="filter-tab" data-cat="arabic">عربي وبحري</button>
+          <button class="filter-tab" data-cat="asian">آسيوي</button>
+        </div>
+        <button class="add-btn" onclick="openItemModal()">
+          <i class="fas fa-plus"></i> إضافة صنف جديد
+        </button>
+      </div>
+      <div class="menu-list" id="menuList"></div>
+    </div>
+  </div>
+
+  <!-- PAGE: INFO -->
+  <div class="page" id="page-info">
+    <div class="section-card">
+      <div class="section-card-title"><i class="fas fa-store"></i> معلومات المطعم الأساسية</div>
+      <div class="field-row">
+        <div class="field">
+          <label>اسم المطعم</label>
+          <input type="text" id="info-name">
+        </div>
+        <div class="field">
+          <label>رقم الهاتف</label>
+          <input type="text" id="info-phone" dir="ltr">
+        </div>
+      </div>
+      <div class="field-row single">
+        <div class="field">
+          <label>وصف المطعم (الفوتر)</label>
+          <textarea id="info-tagline"></textarea>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>رابط الموقع الإلكتروني</label>
+          <input type="text" id="info-website" dir="ltr">
+        </div>
+        <div class="field">
+          <label>رابط خدمة التوصيل</label>
+          <input type="text" id="info-delivery" dir="ltr">
+        </div>
+      </div>
+      <div class="field-row single">
+        <div class="field">
+          <label>العنوان بالعربية</label>
+          <textarea id="info-address" style="min-height:70px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-card-title"><i class="fas fa-scroll"></i> نص الصفحة الرئيسية (Hero)</div>
+      <div class="field-row">
+        <div class="field">
+          <label>التسمية الصغيرة (بالإنجليزية)</label>
+          <input type="text" id="hero-label" dir="ltr">
+        </div>
+        <div class="field">
+          <label>عنوان رئيسي (السطر الأول)</label>
+          <input type="text" id="hero-line1">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>الكلمة المميزة بالذهبي</label>
+          <input type="text" id="hero-highlight">
+        </div>
+      </div>
+      <div class="field-row single">
+        <div class="field">
+          <label>النص التوضيحي تحت العنوان</label>
+          <textarea id="hero-subtitle"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-card-title"><i class="fas fa-book-open"></i> قسم "من نحن"</div>
+      <div class="field-row single">
+        <div class="field">
+          <label>الفقرة الأولى (HTML مسموح)</label>
+          <textarea id="story-p1" style="min-height:100px;"></textarea>
+        </div>
+      </div>
+      <div class="field-row single">
+        <div class="field">
+          <label>الفقرة الثانية</label>
+          <textarea id="story-p2"></textarea>
+        </div>
+      </div>
+      <div id="story-values-fields"></div>
+    </div>
+  </div>
+
+  <!-- PAGE: HOURS -->
+  <div class="page" id="page-hours">
+    <div class="section-card">
+      <div class="section-card-title"><i class="fas fa-clock"></i> ساعات العمل</div>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;margin-bottom:1.25rem;">
+        اكتب أوقات العمل بالتنسيق: <span dir="ltr" style="font-family:var(--font-en);color:var(--gold-b);">05:00–09:00 · 11:30–01:00</span>
+      </p>
+      <table class="hours-table">
+        <thead>
+          <tr>
+            <th>اليوم</th>
+            <th>أوقات العمل</th>
+          </tr>
+        </thead>
+        <tbody id="hoursBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PAGE: STATS -->
+  <div class="page" id="page-stats">
+    <div class="section-card">
+      <div class="section-card-title"><i class="fas fa-chart-bar"></i> الأرقام والإحصاءات</div>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;margin-bottom:1.25rem;">هذه الأرقام تظهر في شريط الإحصاءات على الموقع</p>
+      <div class="stats-grid" id="statsGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ITEM MODAL -->
+<div class="modal-overlay" id="itemModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">إضافة صنف جديد</div>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>الاسم بالعربية *</label>
+        <input type="text" id="item-name-ar" placeholder="مثال: برياني دجاج">
+      </div>
+      <div class="field">
+        <label>الاسم بالإنجليزية</label>
+        <input type="text" id="item-name-en" dir="ltr" placeholder="Chicken Biryani">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>التصنيف *</label>
+        <select id="item-cat">
+          <option value="pakistani">باكستاني وهندي</option>
+          <option value="arabic">عربي وبحري</option>
+          <option value="asian">آسيوي</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>السعر (ريال) *</label>
+        <input type="number" id="item-price" dir="ltr" placeholder="35">
+      </div>
+    </div>
+    <div class="field-row single">
+      <div class="field">
+        <label>الوصف</label>
+        <textarea id="item-desc" placeholder="وصف قصير للطبق..."></textarea>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+      <button class="btn-save-item" onclick="saveItem()">
+        <i class="fas fa-check"></i> حفظ الصنف
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ===== STATE =====
+  let data = null;
+  let editingItemId = null;
+  let currentFilter = 'all';
+
+  // ===== LOAD DATA =====
+  async function loadData() {
+    try {
+      const res = await fetch('data.json?_=' + Date.now());
+      data = await res.json();
+      renderAll();
+    } catch(e) {
+      showToast('خطأ: لم يتم تحميل data.json — تأكد من وجوده في نفس المجلد', true);
+    }
+  }
+
+  function renderAll() {
+    renderMenu();
+    renderInfo();
+    renderHours();
+    renderStats();
+  }
+
+  // ===== MENU =====
+  function renderMenu() {
+    const list = document.getElementById('menuList');
+    const items = data.menu_items.filter(i => currentFilter === 'all' || i.category === currentFilter);
+    if (!items.length) {
+      list.innerHTML = '<div class="empty-state"><i class="fas fa-utensils"></i><p>لا توجد أصناف في هذا التصنيف</p></div>';
+      return;
+    }
+    list.innerHTML = items.map(item => `
+      <div class="menu-row" id="row-${item.id}">
+        <div>
+          <div class="menu-row-name">${item.name_ar}</div>
+          <div class="menu-row-en">${item.name_en}</div>
+        </div>
+        <div><span class="menu-row-cat">${getCatLabel(item.category)}</span></div>
+        <div class="menu-row-price">${item.price} ر</div>
+        <div class="menu-row-actions">
+          <button class="icon-btn icon-btn-edit" onclick="editItem(${item.id})" title="تعديل"><i class="fas fa-pen"></i></button>
+          <button class="icon-btn icon-btn-del" onclick="deleteItem(${item.id})" title="حذف"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function getCatLabel(cat) {
+    const c = data.menu_categories.find(c => c.id === cat);
+    return c ? c.label : cat;
+  }
+
+  // Filter tabs
+  document.getElementById('filterTabs').addEventListener('click', e => {
+    const tab = e.target.closest('.filter-tab');
+    if (!tab) return;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentFilter = tab.dataset.cat;
+    renderMenu();
+  });
+
+  // ===== ITEM MODAL =====
+  function openItemModal(id = null) {
+    editingItemId = id;
+    document.getElementById('modalTitle').textContent = id ? 'تعديل الصنف' : 'إضافة صنف جديد';
+    if (id) {
+      const item = data.menu_items.find(i => i.id === id);
+      document.getElementById('item-name-ar').value = item.name_ar;
+      document.getElementById('item-name-en').value = item.name_en;
+      document.getElementById('item-cat').value = item.category;
+      document.getElementById('item-price').value = item.price;
+      document.getElementById('item-desc').value = item.desc;
+    } else {
+      document.getElementById('item-name-ar').value = '';
+      document.getElementById('item-name-en').value = '';
+      document.getElementById('item-cat').value = 'pakistani';
+      document.getElementById('item-price').value = '';
+      document.getElementById('item-desc').value = '';
+    }
+    document.getElementById('itemModal').classList.add('open');
+  }
+
+  function editItem(id) { openItemModal(id); }
+
+  function deleteItem(id) {
+    if (!confirm('هل أنت متأكد من حذف هذا الصنف؟')) return;
+    data.menu_items = data.menu_items.filter(i => i.id !== id);
+    renderMenu();
+    showToast('تم حذف الصنف');
+  }
+
+  function closeModal() {
+    document.getElementById('itemModal').classList.remove('open');
+    editingItemId = null;
+  }
+
+  function saveItem() {
+    const nameAr = document.getElementById('item-name-ar').value.trim();
+    const price = parseFloat(document.getElementById('item-price').value);
+    if (!nameAr) { showToast('الاسم العربي مطلوب', true); return; }
+    if (!price) { showToast('السعر مطلوب', true); return; }
+
+    const itemData = {
+      name_ar: nameAr,
+      name_en: document.getElementById('item-name-en').value.trim(),
+      category: document.getElementById('item-cat').value,
+      price: price,
+      desc: document.getElementById('item-desc').value.trim()
+    };
+
+    if (editingItemId) {
+      const idx = data.menu_items.findIndex(i => i.id === editingItemId);
+      data.menu_items[idx] = { ...data.menu_items[idx], ...itemData };
+    } else {
+      const maxId = data.menu_items.reduce((m, i) => Math.max(m, i.id), 0);
+      data.menu_items.push({ id: maxId + 1, ...itemData });
+    }
+    closeModal();
+    renderMenu();
+    showToast(editingItemId ? 'تم تحديث الصنف ✓' : 'تم إضافة الصنف ✓');
+  }
+
+  // ===== INFO PAGE =====
+  function renderInfo() {
+    const r = data.restaurant;
+    document.getElementById('info-name').value     = r.name;
+    document.getElementById('info-phone').value    = r.phone;
+    document.getElementById('info-tagline').value  = r.tagline;
+    document.getElementById('info-website').value  = r.website;
+    document.getElementById('info-delivery').value = r.delivery_url;
+    document.getElementById('info-address').value  = r.address_ar;
+    const h = data.hero;
+    document.getElementById('hero-label').value     = h.label;
+    document.getElementById('hero-line1').value     = h.title_line1;
+    document.getElementById('hero-highlight').value = h.title_highlight;
+    document.getElementById('hero-subtitle').value  = h.subtitle;
+    const s = data.story;
+    document.getElementById('story-p1').value = s.paragraph1;
+    document.getElementById('story-p2').value = s.paragraph2;
+    const vf = document.getElementById('story-values-fields');
+    vf.innerHTML = '<div style="color:rgba(255,255,255,0.45);font-size:0.78rem;font-family:var(--font-en);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem;">نقاط القوة (ميزات المطعم)</div>';
+    s.values.forEach((v, i) => {
+      vf.innerHTML += `<div class="field" style="margin-bottom:0.6rem;"><input type="text" id="story-val-${i}" value="${v}"></div>`;
+    });
+  }
+
+  function collectInfo() {
+    data.restaurant.name        = document.getElementById('info-name').value;
+    data.restaurant.phone       = document.getElementById('info-phone').value;
+    data.restaurant.tagline     = document.getElementById('info-tagline').value;
+    data.restaurant.website     = document.getElementById('info-website').value;
+    data.restaurant.delivery_url= document.getElementById('info-delivery').value;
+    data.restaurant.address_ar  = document.getElementById('info-address').value;
+    data.hero.label             = document.getElementById('hero-label').value;
+    data.hero.title_line1       = document.getElementById('hero-line1').value;
+    data.hero.title_highlight   = document.getElementById('hero-highlight').value;
+    data.hero.subtitle          = document.getElementById('hero-subtitle').value;
+    data.story.paragraph1       = document.getElementById('story-p1').value;
+    data.story.paragraph2       = document.getElementById('story-p2').value;
+    data.story.values = data.story.values.map((_, i) => document.getElementById(`story-val-${i}`)?.value || '');
+  }
+
+  // ===== HOURS PAGE =====
+  function renderHours() {
+    const body = document.getElementById('hoursBody');
+    body.innerHTML = data.hours.map((h, i) => `
+      <tr>
+        <td class="day-name">${h.day}</td>
+        <td><input type="text" id="hour-${i}" value="${h.time}" dir="ltr" placeholder="05:00–09:00 · 11:30–01:00"></td>
+      </tr>
+    `).join('');
+  }
+
+  function collectHours() {
+    data.hours = data.hours.map((h, i) => ({
+      day: h.day,
+      time: document.getElementById(`hour-${i}`)?.value || h.time
+    }));
+  }
+
+  // ===== STATS PAGE =====
+  function renderStats() {
+    const grid = document.getElementById('statsGrid');
+    grid.innerHTML = data.stats.map((s, i) => `
+      <div class="stat-edit">
+        <div class="stat-preview">${s.num}</div>
+        <div class="field"><label>الرقم</label><input type="text" id="stat-num-${i}" value="${s.num}"></div>
+        <div class="field"><label>الوصف</label><input type="text" id="stat-lbl-${i}" value="${s.label}"></div>
+      </div>
+    `).join('');
+  }
+
+  function collectStats() {
+    data.stats = data.stats.map((s, i) => ({
+      num: document.getElementById(`stat-num-${i}`)?.value || s.num,
+      label: document.getElementById(`stat-lbl-${i}`)?.value || s.label
+    }));
+  }
+
+  // ===== JSONBIN CONFIG =====
+  const JSONBIN_ID  = '69b73a36c3097a1dd52a852d';
+  const JSONBIN_KEY = '$2a$10$YRTIGCgYnVZMuVUG5RWO5e75pCZgS4EBNGvavkk9jxmlF8rU50EtC';
+
+  // ===== SAVE =====
+  async function saveData() {
+    collectInfo();
+    collectHours();
+    collectStats();
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+    const json = JSON.stringify(data, null, 2);
+
+    // ── If JSONBin credentials are configured, save online ──
+    if (JSONBIN_ID !== 'YOUR_BIN_ID_HERE' && JSONBIN_KEY !== 'YOUR_MASTER_KEY_HERE') {
+      try {
+        const res = await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_ID, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': JSONBIN_KEY
+          },
+          body: json
+        });
+        if (res.ok) {
+          showToast('✓ تم الحفظ — الموقع سيتحدث فوراً');
+        } else {
+          const err = await res.json();
+          showToast('خطأ: ' + (err.message || res.status), true);
+        }
+      } catch (e) {
+        showToast('خطأ في الاتصال بـ JSONBin: ' + e.message, true);
+      }
+
+    // ── Fallback: try local server (for offline use) ──
+    } else {
+      try {
+        const res = await fetch('http://localhost:3000/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: json
+        });
+        const result = await res.json();
+        if (result.ok) {
+          showToast('✓ تم الحفظ بنجاح — الموقع محدّث الآن');
+        } else {
+          showToast('خطأ: ' + result.message, true);
+        }
+      } catch (e) {
+        // Last resort: download the file
+        showToast('⚠️ لم يتم ضبط JSONBin — سيتم تحميل الملف', true);
+        setTimeout(() => {
+          const blob = new Blob([json], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = 'data.json';
+          document.body.appendChild(a); a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 1000);
+      }
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-save"></i> حفظ التغييرات';
+  }
+
+  // ===== NAV =====
+  const pageTitles = {
+    menu: 'قائمة <span>الطعام</span>',
+    info: 'معلومات <span>المطعم</span>',
+    hours: 'ساعات <span>العمل</span>',
+    stats: 'الأرقام <span>والإحصاءات</span>'
+  };
+
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      item.classList.add('active');
+      document.getElementById('page-' + item.dataset.page).classList.add('active');
+      document.getElementById('topbarTitle').innerHTML = pageTitles[item.dataset.page];
+      closeSidebar();
+    });
+  });
+
+  // ===== MOBILE SIDEBAR =====
+  const sidebar = document.getElementById('sidebar');
+  const overlayBg = document.getElementById('overlayBg');
+  document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+    sidebar.classList.add('open');
+    overlayBg.classList.add('show');
+  });
+  overlayBg.addEventListener('click', closeSidebar);
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlayBg.classList.remove('show');
+  }
+
+  // ===== TOAST =====
+  function showToast(msg, error = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (error ? ' error' : '');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // ===== INIT =====
+  loadData();
+</script>
+</body>
+</html>
